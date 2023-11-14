@@ -1,5 +1,7 @@
 package br.com.gubee.mensageria.core.streams;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import br.com.gubee.mensageria.model.*;
 import org.springframework.kafka.support.SendResult;
@@ -8,23 +10,25 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@AllArgsConstructor
 public class Producer {
 
+    @Autowired
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public Producer(KafkaTemplate<String, Object> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+    @Autowired
+    private int id;
 
     public void sendOrder(Order order) {
-        CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send("order_created", order.getId(), order);
+        id += 1;
+        CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send("order_created", String.valueOf(id), order);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                System.out.println("Sent message=[" + order.getId() +
+                System.out.println("Sent message=[" + id +
                         "] with offset=[" + result.getRecordMetadata().offset() + "]");
             } else {
                 System.out.println("Unable to send message=[" +
-                        order.getId() + "] due to : " + ex.getMessage());
+                        id + "] due to : " + ex.getMessage());
             }
         });
     }
@@ -36,7 +40,7 @@ public class Producer {
                 System.out.println("Sent message=[" + event.getOrderId() +
                         "] with offset=[" + result.getRecordMetadata().offset() + "]");
             } else {
-                System.out.println("Unable to send message=[" +
+                System.out.println("Unable to send message=[" + 
                         event.getOrderId() + "] due to : " + ex.getMessage());
             }
         });
