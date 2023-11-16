@@ -60,29 +60,29 @@ services:
       KAFKA_TOPIC: test
     ports:
         - "8080:8080"
-
-  consumer-2:
-    hostname: consumer
-    build:
-      context: ../consumer
-      dockerfile: Dockerfile
-    depends_on:
-      - kafka
-    environment:
-      KAFKA_BROKER: kafka:9092
-      KAFKA_TOPIC: test
-    ports:
-      - "8082:8080"
-
-  consumer-3:
-    hostname: consumer
-    build:
-      context: ../consumer
-      dockerfile: Dockerfile
-    depends_on:
-      - kafka
-    environment:
-      KAFKA_BROKER: kafka:9092
-      KAFKA_TOPIC: test
-    ports:
-      - "8083:8080"
+#
+#  consumer-2:
+#    hostname: consumer
+#    build:
+#      context: ../consumer
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - kafka
+#    environment:
+#      KAFKA_BROKER: kafka:9092
+#      KAFKA_TOPIC: test
+#    ports:
+#      - "8082:8080"
+#
+#  consumer-3:
+#    hostname: consumer
+#    build:
+#      context: ../consumer
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - kafka
+#    environment:
+#      KAFKA_BROKER: kafka:9092
+#      KAFKA_TOPIC: test
+#    ports:
+#      - "8083:8080"
